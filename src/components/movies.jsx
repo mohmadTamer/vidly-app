@@ -7,6 +7,7 @@ import Pagination from "./commen/pagination";
 import Paginate from "./utils/paginate";
 import _ from "lodash";
 
+
 export default class Movies extends Component {
   state = {
     movies: [],
@@ -72,43 +73,45 @@ export default class Movies extends Component {
     const { currentPage, pageSize, sortCol } = this.state;
     const { totalcount, data: movies } = this.getPagedData()
 
-    if (count === 0) return <div className="container"><h2>No items to show</h2></div>
-
+    if (count === 0)
+      return <div className="container"><h2>No items to show</h2></div>
 
     return (
-      <div className="m-3 container">
-        <div className="row">
-          <div className="col-3 ">
+      <>
+        <div className="m-3 container">
+          <div className="row">
+            <div className="col-3 ">
 
-            <ListGroup
-              genraList={this.state.genre}
-              onCatChange={this.handleGenre}
-              currentGenra={this.state.currentGenra}
-            />
+              <ListGroup
+                genraList={this.state.genre}
+                onCatChange={this.handleGenre}
+                currentGenra={this.state.currentGenra}
+              />
+            </div>
+
+            <div className="col">
+              <h2>Showing {totalcount} items from the list</h2>
+
+              <MoviesTable
+                // filterdGenra={totalcount}
+                moviesPage={movies}
+                sortCol={sortCol}
+                handleDelete={this.handleDelete}
+                handleLike={this.handleLike}
+                onSort={this.handelSort}
+              />
+
+              <Pagination
+                noOfElement={totalcount}
+                currentPage={currentPage}
+                sizeOfPage={pageSize}
+                onPageChange={this.handlePages}
+              />
+            </div>
+
           </div>
-
-          <div className="col">
-            <h2>Showing {totalcount} items from the list</h2>
-
-            <MoviesTable
-              // filterdGenra={totalcount}
-              moviesPage={movies}
-              sortCol={sortCol}
-              handleDelete={this.handleDelete}
-              handleLike={this.handleLike}
-              onSort={this.handelSort}
-            />
-
-            <Pagination
-              noOfElement={totalcount}
-              currentPage={currentPage}
-              sizeOfPage={pageSize}
-              onPageChange={this.handlePages}
-            />
-          </div>
-
         </div>
-      </div>
+      </>
     )
 
   }
